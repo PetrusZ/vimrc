@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/home/silence/.vim/doc'
+let g:netrw_dirhist_2='/home/silence/.vim'
+let g:netrw_dirhist_3='/etc/mplayer'
+let g:netrw_dirhist_4='/etc/resolvconf/resolv.conf.d'
+let g:netrw_dirhist_5='/home/silence/.vimperator'
+let g:netrw_dirhist_6='/home/silence/.vimperator/info'
+let g:netrw_dirhist_7='/etc/network'
+let g:netrw_dirhist_8='/opt/omap3530/dvsdk/boot/succesboot'
+let g:netrw_dirhist_9='/home/silence/.vim'
