@@ -1,2 +1,0 @@
-supertab.vmb: call delete('/home/silence/.vim/doc/supertab.txt')|call delete('/home/silence/.vim/plugin/supertab.vim')
-winmanager.vmb: call delete('/home/silence/.vim/doc/winmanager.txt')|call delete('/home/silence/.vim/plugin/winfileexplorer.vim')|call delete('/home/silence/.vim/plugin/winmanager.vim')|call delete('/home/silence/.vim/plugin/wintagexplorer.vim')
