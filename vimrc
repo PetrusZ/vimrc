@@ -24,7 +24,7 @@ set sts=4                 " 设置softtabstop为4
 set showmatch             " 在输入括号时光标会短暂地跳到与之相匹配的括号处
 set autoindent            " 设置自动缩进
 "set smartindent          " 设置智能缩进
-set wrap                  " 不自动折行
+set nowrap                  " 不自动折行
 set tw=500                " 设置textwidth为500
 set lbr                   " 不在单词中间进行换行
 set number                " 设置是否显示行
@@ -51,6 +51,13 @@ filetype plugin indent on          "开启文件类型插件和缩进识别功�
 " 手动折叠
 "au BufWinLeave .vimrc silent mkview      "vimrc文件自动保存折叠
 "au BufWinEnter .vimrc silent loadview    "vimrc自动载入折叠
+
+"设置只在特定的文件类型才折行
+" au FileType vimwiki set wrap
+au BufEnter * if &filetype == "" | set wrap | endif
+au BufEnter * if &filetype == "vimwiki" | set wrap | endif
+
+au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 " -----------------------------------------------------------------------------"}}}
 "  < 常用快捷键 > {{{
 " -----------------------------------------------------------------------------
@@ -69,6 +76,8 @@ filetype plugin indent on          "开启文件类型插件和缩进识别功�
 "<S-F9>     输入运行参数
 "<C-F9>     运行
 "<F10>      打开博客列表
+"<C-F10>    将博文保存为草稿
+"<A-F10>    在本地预览博文
 "<F11>      终端最大、最小化
 "<S-F11>    生成cscope文件
 "<C-F11>    添加cscope文件
@@ -214,7 +223,7 @@ map <F7> :cn<CR>
 map <s-F7> :cp<CR>
 map <F12> :VimShell -buffer-name=<CR>
 " nnoremap <leader>a :Ack 
-nnoremap <leader>a :Ag 
+nnoremap <leader>a :Ag <C-R><C-W><cr>
 map <Leader>c :FixWhitespace<cr>
 
 " vimrepress
@@ -777,6 +786,7 @@ Bundle 'Shougo/unite.vim'
 Bundle 'vimwiki/vimwiki'
 Bundle 'rking/ag.vim'
 Bundle 'mattn/calendar-vim'
+Bundle 'lilydjwg/fcitx.vim'
 
 "格式2：vim-scripts里面的仓库，直接打仓库名即可。
 " vim-scripts repos
