@@ -54,8 +54,8 @@ filetype plugin indent on          "开启文件类型插件和缩进识别功�
 
 "设置只在特定的文件类型才折行
 " au FileType vimwiki set wrap
-au BufEnter * if &filetype == "" | set wrap | endif
-au BufEnter * if &filetype == "vimwiki" | set wrap | endif
+" au BufEnter * if &filetype == "" | set wrap | endif
+" au BufEnter * if &filetype == "vimwiki" | set wrap | endif
 
 au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 " -----------------------------------------------------------------------------"}}}
@@ -65,7 +65,7 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<F2>       切换到下一个高亮书签，或下一个语法错误处
 "<S-F2>     切换到上一个高亮书签，或上一个语法错误处
 "<c-F2>     标记高亮书签
-"<F3>       打开taglist
+"<F3>       打开tagbar
 "<F4>       打开NERDTree
 "<F5>       打开Gundo tree
 "<F6>       打开quickfix
@@ -83,6 +83,10 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<C-F11>    添加cscope文件
 "<F12>      打开vimshell
 
+"gD         查询变量，只在本文件中
+"gd         查询变量, 只在本函数中
+"[i         查询变量的定义
+"[<Tab>     跳到变量定义的地方
 "mm         标记高亮书签
 ",a         启动ag进行全局查找 :Ag [options] pattern [PATH]
 ",o         打开bufexplorer
@@ -92,7 +96,21 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 ",ev        快速打开.vimrc
 ",sv        快速重载.vimrc
 "<C-e>      停止补全并回到原来文字
-"<S-k>      普通模式:man在光标下的函数   插入模式：补全snippets模板
+"<S-k>      普通模式:man在光标下的函数
+
+" Ultisnips
+" ----------------------------------------------------------------
+"<Tab>      snips模板补全
+"<C-k>      切换到补全的下一处
+"<C-j>      切换到补全的上一处
+"<M-l>      打开snips模板补全列表
+
+" minibufexpl
+" ----------------------------------------------------------------
+"<C-m>      切换到下一个buffer
+"<C-n>      切换到上一个buffer
+"<M-d>      删除当前buffer
+"<M-m>      切换minibufexpl
 
 " windows
 " ----------------------------------------------------------------
@@ -102,8 +120,7 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 
 " macro
 " ----------------------------------------------------------------
-" qa 将之后的所有键盘操作录制下来，直到再次在命令模式按下q，并存储在a中
-" @a 执行刚刚记录在a里面的键盘操作
+" qa 将之后的所有键盘操作录制下来，直到再次在命令模式按下q，并存储在a中 " @a 执行刚刚记录在a里面的键盘操作
 " @@ 执行上一次的macro操作
 
 " Ctrlp
@@ -212,7 +229,8 @@ cmap w!! %!sudo tee >/dev/null %
 let mapleader=","   "将<Leader>改为','键
 let g:EasyMotion_leader_key = '<Leader>'  " easy-motion
 
-:imap jj <Esc>
+:imap <C-l> /*
+:imap jk <Esc>
 map <leader>u :MRU<CR>
 map <leader>o :BufExplorer<CR>
 map <silent> <leader>h :noh<CR>
@@ -263,6 +281,11 @@ execute "set <F9>=\e[20;*~"
 execute "set <F10>=\e[21;*~"
 execute "set <F11>=\e[23;*~"
 execute "set <F12>=\e[24;*~"
+
+set ttimeoutlen=1
+for UseAlt in range (65 , 90 ) + range ( 97 , 122)
+        exe "set <M-" .nr2char(UseAlt).">=\<Esc>" .nr2char (UseAlt)
+endfor
 " -----------------------------------------------------------------------------"}}}
 " < GUI模式 配置 >"{{{
 " -----------------------------------------------------------------------------
@@ -374,7 +397,8 @@ let g:tagbar_compact = 1
 " -----------------------------------------------------------------------------"}}}
 "  < ctags 插件配置 >"{{{
 " -----------------------------------------------------------------------------
-map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
+" map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
+map <C-F12> :!ctags -R --c++-kinds=+lp --c-kinds=+lp  --fields=+iaS --extra=+q .<CR><CR>
 "将系统已经生成的tags导入
 "set tags+=~/.vim/systags
 " -----------------------------------------------------------------------------"}}}
@@ -382,9 +406,11 @@ map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
 " -----------------------------------------------------------------------------
 if has("cscope")
     set cscopetag   " 使支持用 Ctrl+]  和 Ctrl+t 快捷键在代码间跳来跳去
-    " check cscope for definition of a symbol before checking ctags:
-    " set to 1 if you want the reverse search order.
+    " 如果 'csto' 被设为 0，cscope 数据库先被搜索，搜索失败的情况下在搜索标签文件。
+    " 如果 'csto' 被设为 1，标签文件会在cscope 数据库之前被搜索。
     set csto=1
+    " 总同时搜索 cscope 数据库和标签文件
+    " set cst
     " 是否使用 quickfix 窗口来显示 cscope 结果
     set cscopequickfix=s-,c-,d-,i-,t-,e-
 
@@ -402,23 +428,39 @@ if has("cscope")
     map <S-F11> :!cscope -Rbq<CR><CR>
     map <C-F11> :cs add cscope.out .<CR>
 
+    "s:查找即查找C语言符号出现的地方
+    nmap cfs :cs find s <C-R>=expand("<cword>")<CR><CR>
+    "g:查找函数、宏、枚举等定义的位置
+    nmap cfg :cs find g <C-R>=expand("<cword>")<CR><CR>
+    "c:查找光标下的函数被调用的地方
+    nmap cfc :cs find c <C-R>=expand("<cword>")<CR><CR>
+    "t: 查找指定的字符串出现的地方
+    nmap cft :cs find t <C-R>=expand("<cword>")<CR><CR>
+    "e:egrep模式查找,相当于egrep功能
+    nmap cfe :cs find e <C-R>=expand("<cword>")<CR><CR>
+    "f: 查找文件名,相当于lookupfile
+    nmap cfn :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    "i: 查找当前文件名出现过的地方
+    nmap cfi :cs find i <C-R>=expand("<cfile>")<CR><CR>
+    "d: 查找本当前函数调用的函数
+    nmap cfd :cs find d <C-R>=expand("<cword>")<CR><CR>
 
-    " 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
-    nmap <C-/>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    " 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
-    nmap <C-/>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    " 查找本函数调用的函数
-    nmap <C-/>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-    " 查找调用本函数的函数
-    nmap <C-/>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    " 查找指定的字符串
-    nmap <C-/>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-    " 查找egrep模式，相当于egrep功能，但查找速度快多了
-    nmap <C-/>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-    " 查找并打开文件，类似vim的find功能
-    nmap <C-/>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    " 查找包含本文件的文件
-    nmap <C-/>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+   " " 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
+   " nmap <C-/>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+   " " 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
+   " nmap <C-/>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+   " " 查找本函数调用的函数
+   " nmap <C-/>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+   " " 查找调用本函数的函数
+   " nmap <C-/>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+   " " 查找指定的字符串
+   " nmap <C-/>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+   " " 查找egrep模式，相当于egrep功能，但查找速度快多了
+   " nmap <C-/>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+   " " 查找并打开文件，类似vim的find功能
+   " nmap <C-/>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+   " " 查找包含本文件的文件
+   " nmap <C-/>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 endif
 " -----------------------------------------------------------------------------"}}}
 "  < Gundo 插件配置 >"{{{
@@ -431,6 +473,21 @@ let g:gundo_playback_delay=30
 let g:ctrlp_open_multiple_files = 'i'   "hidden in buffer
 set wildignore+=*/tmp/*,*.so,*.o,*.a,*.obj,*.swp,*.zip,*.pyc,*.pyo,*.class,.DS_Store,.jpg,.png,.tar,.doc,.pdf " MacOSX/Linux
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+" -----------------------------------------------------------------------------"}}}
+"  < Ultisnips 插件配置 >"{{{
+" -----------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<C-k>"
+let g:UltiSnipsJumpBackwardTrigger="<C-j>"
+let g:UltiSnipsListSnippets="<M-l>"
+
+"let g:ulti_expand_or_jump_res = 0 "default value, just set once
+"function! Ulti_ExpandOrJump_and_getRes()
+"    call UltiSnips_ExpandSnippetOrJump()
+"    return g:ulti_expand_or_jump_res
+"endfunction
+"
+"inoremap <tab> <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":IMAP_Jumpfunc('', 0)<CR>
 " -----------------------------------------------------------------------------"}}}
 "  < nerdcommenter 插件配置 >"{{{
 " -----------------------------------------------------------------------------
@@ -467,13 +524,16 @@ let g:clang_snippets=1
 let g:clang_snippets_engine="clang_complete"
 let g:clang_close_preview=1
 let g:clang_trailing_placeholder=0
-""let g:clang_exec="clang"
+"let g:clang_exec="clang"
 "let g:clang_user_options="-std=c++11"
-""let g:clang_library_path="/usr/lib"
+let g:clang_library_path="/usr/lib/llvm-3.2/lib"
 let g:clang_complete_macros=1
 let g:clang_complete_patterns=1
 "let g:clang_auto_user_options="path, .clang_complete, compile_commands.json"
-"
+
+let g:clang_jumpto_declaration_key='<M-.>'
+let g:clang_jumpto_back_key='<M-,>'
+
 if has('conceal')
     let g:clang_conceal_snippets=1
 endif
@@ -642,11 +702,25 @@ let g:syntastic_loc_list_height = 5
 let g:syntastic_enable_highlighting = 0
 let g:syntastic_always_populate_loc_list = 1
 " -----------------------------------------------------------------------------"}}}
-"  < minibufexp 插件配置 >"{{{
+"  < minibufexpl 插件配置 >"{{{
 " -----------------------------------------------------------------------------
-"let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplMapWindowNavVim = 1
-"let g:miniBufExplMapWindowNavArrows = 1     "使用ctrl和方向键在窗口间切换
+let g:miniBufExplCycleArround = 1
+" let g:did_minibufexplorer_syntax_inits = 1
+
+" noremap <C-m> :MBEbn<CR>
+" noremap <C-n> :MBEbp<CR>
+noremap <C-m> :MBEbb<CR>
+noremap <C-n> :MBEbf<CR>
+map <M-d> :MBEbd<CR>
+map <M-m> :MBEToggle<cr>
+
+" hi MBENormal               ctermfg=214
+hi link MBENormal           Special
+" hi MBEChanged              ctermfg=1
+" hi MBEVisibleNormal        ctermfg=5
+" hi MBEVisibleNormalActive  ctermfg=13
+" hi MBEVisibleChanged       ctermfg=7
+" hi MBEVisibleChangedActive ctermfg=9
 " -----------------------------------------------------------------------------"}}}
 "  < MRU 插件配置 >"{{{
 " -----------------------------------------------------------------------------
@@ -685,12 +759,14 @@ let NERDTreeShowBookmarks=1
 " 开启/关闭对齐线
 nmap <leader>il :IndentLinesToggle<CR>
 
+" let g:indentLine_enabled = 1
+" let g:indentLine_loaded = 1
+
 " 设置Gvim的对齐线样式
-"let g:indentLine_char = "┊"
-"let g:indentLine_first_char = "┊"
+let g:indentLine_char = "│"
 
 " 设置终端对齐线颜色
-"let g:indentLine_color_term = 239
+" let g:indentLine_color_term = 239
 "
 " 设置 GUI 对齐线颜色
 " let g:indentLine_color_gui = '#A4E57E'
@@ -755,13 +831,8 @@ Bundle 'gmarik/vundle'
 Bundle 'Raimondi/delimitMate'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'ervandew/supertab'
-" snippets
+Bundle 'SirVer/ultisnips'
 "Bundle 'Shougo/neosnippet.vim'
-"Bundle 'garbas/vim-snipmate'
-"Bundle 'honza/vim-snippets'
-" snipmate dependencies
-"Bundle 'MarcWeber/vim-addon-mw-utils'
-"Bundle 'tomtom/tlib_vim'
 " Fast navigation
 Bundle 'tsaleh/vim-matchit'
 Bundle 'Lokaltog/vim-easymotion'
@@ -778,6 +849,8 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdtree'
+Bundle 'brookhong/cscope.vim'
+Bundle 'fholgado/minibufexpl.vim'
 Bundle 'bronson/vim-trailing-whitespace'
 " Other Util
 Bundle 'Shougo/vimproc.vim'
@@ -787,19 +860,16 @@ Bundle 'vimwiki/vimwiki'
 Bundle 'rking/ag.vim'
 Bundle 'mattn/calendar-vim'
 Bundle 'lilydjwg/fcitx.vim'
+Bundle 'Yggdroot/indentLine'
 
 "格式2：vim-scripts里面的仓库，直接打仓库名即可。
 " vim-scripts repos
-" Bundle 'The-NERD-tree'
-Bundle 'minibufexpl.vim'
 Bundle 'bufexplorer.zip'
 Bundle 'c.vim'
-"Bundle 'a.vim'
+" Bundle 'a.vim'
 Bundle 'Visual-Mark'
 Bundle 'CRefVim'
 Bundle 'mru.vim'
-Bundle 'indentLine.vim'
-Bundle 'snipMate'
 Bundle 'VimRepress'
 "
 "格式3：非Github的Git仓库
