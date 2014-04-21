@@ -6,6 +6,7 @@ A personal vimrc.
     supertab
     delimitMate
     clang_complete
+    ultisnips
 
     " Fast navigation
     vim-matchit
@@ -35,14 +36,18 @@ A personal vimrc.
 
     " Other Util
     CRefVim
+    vundle
     vimproc.vim
     vimshell.vim
     unite.vim
     vimwiki
+    goyo.vim
     calendar-vim
     fcitx.vim
     VimRepress
     indentLine.vim
+    vim-pandoc
+    vim-youdao-translater'
 
 #### hotkey
 
@@ -80,22 +85,35 @@ A personal vimrc.
     ,c         清除所有无用的空格
     ,ev        快速打开.vimrc
     ,sv        快速重载.vimrc
+    <C-o>      回到上次编辑的地方
     <C-e>      停止补全并回到原来文字
     <S-k>      普通模式:man在光标下的函数
+
+     cscope
+     ----------------------------------------------------------------
+    cfs:查找即查找C语言符号出现的地方
+    cfg:查找函数、宏、枚举等定义的位置
+    cfc:查找光标下的函数被调用的地方
+    cft: 查找指定的字符串出现的地方
+    cfe:egrep模式查找,相当于egrep功能
+    cfn: 查找文件名,相当于lookupfile
+    cfi: 查找当前文件名出现过的地方
+    cfd: 查找本当前函数调用的函数
 
      Ultisnips
      ----------------------------------------------------------------
     <Tab>      snips模板补全
-    <C-k>      切换到补全的下一处
-    <C-j>      切换到补全的上一处
+    jj         切换到补全的下一处
+    kk         切换到补全的上一处
     <M-l>      打开snips模板补全列表
 
      minibufexpl
      ----------------------------------------------------------------
-    <C-m>      切换到下一个buffer
-    <C-n>      切换到上一个buffer
+    <M-m>      切换到下一个buffer
+    <M-n>      切换到上一个buffer
     <M-d>      删除当前buffer
-    <M-m>      切换minibufexpl
+    <M-h>      切换minibufexpl
+    ,1-100     切换到第1-100个buffer
 
      windows
      ----------------------------------------------------------------
@@ -108,12 +126,24 @@ A personal vimrc.
      qa 将之后的所有键盘操作录制下来，直到再次在命令模式按下q，并存储在a中 " @a 执行刚刚记录在a里面的键盘操作
      @@ 执行上一次的macro操作
 
+     十六进制编辑
+     ----------------------------------------------------------------
+    :%!xxd     把所有的行(%)用本地(!)的xxd程序打开。
+    :%!xxd -r  返回正常显示
+    xxd本是linux下一个显示、编辑、转换二进制的命令。
+
      Ctrlp
      ----------------------------------------------------------------
     <C-p>      打开Ctrlp进行查找
     <C-d>      更改匹配模式(文件|目录)
     <C-z>      标记要打开的文件
     <C-y>      建立新的文件或目录
+
+     vim-youdao-translater
+     ----------------------------------------------------------------
+     在普通模式下，按 ctrl+t， 会翻译当前光标下的单词；
+     在 visual 模式下选中单词，按 ctrl+t，会翻译选择的单词；
+     ,yd可以在命令行输入要翻译的单词；
 
      Tabular
      ----------------------------------------------------------------
@@ -141,6 +171,13 @@ A personal vimrc.
     yS  - add a surrounding and place the surrounded text on a new line + indent it
     yss - add a surrounding to the whole line
     ySs - add a surrounding to the whole line, place it on a new line + indent it
+
+    删除包围符号的命令是ds,后面加的字符表示要删除的符号比如：
+    "Hello *world!"           ds"         Hello world!
+    替换包围符号的命令是cs,命令后跟两个参数，分别是被替换的符号和需要使用的符号。比如
+    "Hello *world!"           cs"'        'Hello world!'
+    添加包围符号的命令是ys(ys可以记为you surround)，命令后同样跟两个参数，第一个是一个vim“动作”（motion）或者是一个文本对象。
+    其中motion即vim动作，比如说w向后一个单词。文本对象简单的来说主要是来通过一些分隔符来标识一段文本，比如iw就是一个文本对象，即光标下的单词。
 
      Visual mode
      -----------
