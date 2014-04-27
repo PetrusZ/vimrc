@@ -99,6 +99,23 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<C-e>      停止补全并回到原来文字
 "<S-k>      普通模式:man在光标下的函数
 
+" windows
+" ----------------------------------------------------------------
+"<C-c>      关闭分屏窗口
+"<C-w><C-o> 将当前的分屏窗口最大化
+"<C-j><C-k><C-h><C-l>   在分屏窗口间浏览
+
+" macro
+" ----------------------------------------------------------------
+" qa 将之后的所有键盘操作录制下来，直到再次在命令模式按下q，并存储在a中 " @a 执行刚刚记录在a里面的键盘操作
+" @@ 执行上一次的macro操作
+
+" 十六进制编辑
+" ----------------------------------------------------------------
+":%!xxd     把所有的行(%)用本地(!)的xxd程序打开。
+":%!xxd -r  返回正常显示
+"xxd本是linux下一个显示、编辑、转换二进制的命令。
+
 " cscope
 " ----------------------------------------------------------------
 "cfs:查找即查找C语言符号出现的地方
@@ -125,23 +142,6 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<M-h>      切换minibufexpl
 ",1-100     切换到第1-100个buffer
 
-" windows
-" ----------------------------------------------------------------
-"<C-c>      关闭分屏窗口
-"<C-w><C-o> 将当前的分屏窗口最大化
-"<C-j><C-k><C-h><C-l>   在分屏窗口间浏览
-
-" macro
-" ----------------------------------------------------------------
-" qa 将之后的所有键盘操作录制下来，直到再次在命令模式按下q，并存储在a中 " @a 执行刚刚记录在a里面的键盘操作
-" @@ 执行上一次的macro操作
-
-" 十六进制编辑
-" ----------------------------------------------------------------
-":%!xxd     把所有的行(%)用本地(!)的xxd程序打开。
-":%!xxd -r  返回正常显示
-"xxd本是linux下一个显示、编辑、转换二进制的命令。
-
 " Ctrlp
 " ----------------------------------------------------------------
 "<C-p>      打开Ctrlp进行查找
@@ -160,6 +160,19 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 " ,m=   按'='来对齐排版
 " ,m:   按':'来对齐排版
 " 其他  在n或v模式下，输入":Tabularize /," 按','来对对齐排版
+
+" vim-pandoc
+" ----------------------------------------------------------------
+" <localleader>pdf      转换为PDF文件
+" <localleader>pdf+     转换为PDF文件并打开
+" <localleader>html     转换为html文件
+" <localleader>html+    转换为html文件并打开
+" <localleader>odt      转换为odt文件
+" <localleader>odt+     转换为odt文件并打开
+" <localleader>www      在浏览器中打开链接
+" <localleader>gr       从引用链接跳到定义处
+" <localleader>br       从定义处跳回
+" <localleader>nr       从引用链接处创建一个引用定义（乱码）
 
 " Tagbar
 " ----------------------------------------------------------------
@@ -188,7 +201,7 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 ""Hello *world!"           cs"'        'Hello world!'
 "添加包围符号的命令是ys(ys可以记为you surround)，命令后同样跟两个参数，第一个是一个vim“动作”（motion）或者是一个文本对象。
 "其中motion即vim动作，比如说w向后一个单词。文本对象简单的来说主要是来通过一些分隔符来标识一段文本，比如iw就是一个文本对象，即光标下的单词。
-
+"
 " Visual mode
 " -----------
 "s   - in visual mode, add a surrounding(key mapping error)
@@ -453,7 +466,7 @@ let g:SuperTabRetainCompletionType=2
 " 1 - 记住上次的补全方式,直到用其他的补全命令改变它
 " 2 - 记住上次的补全方式,直到按ESC退出插入模式为止
 "
-let g:SuperTabDefaultCompletionType="<C-N>"
+let g:SuperTabDefaultCompletionType="<C-P>"
 " 设置按下<Tab>后默认的补全方式, 默认是<C-P>,
 " 还有其他的补全方式, 你可以看看下面的一些帮助:
 " :help ins-completion
@@ -737,6 +750,11 @@ let g:Powerline_stl_path_style = 'full'
 " let g:Powerline_symbols = 'unicode'
 set encoding=utf8
 " -----------------------------------------------------------------------------"}}}
+"  < vim-pandoc 插件配置 >"{{{
+" -----------------------------------------------------------------------------
+let maplocalleader = ","
+let g:pandoc_no_folding = 1
+" -----------------------------------------------------------------------------"}}}
 "  < vimwiki 插件配置 >"{{{
 " -----------------------------------------------------------------------------
 :map <Space> <Plug>VimwikiToggleListItem
@@ -931,6 +949,8 @@ Bundle 'Shougo/vimshell.vim'
 Bundle 'Shougo/unite.vim'
 Bundle 'vimwiki/vimwiki'
 Bundle 'vim-pandoc/vim-pandoc'
+Bundle 'vim-pandoc/vim-pandoc-syntax'
+Bundle 'vim-pandoc/vim-pandoc-after'
 Bundle 'ianva/vim-youdao-translater'
 Bundle 'junegunn/goyo.vim'
 " Bundle 'mattn/calendar-vim'
