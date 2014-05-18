@@ -149,6 +149,22 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<C-z>      标记要打开的文件
 "<C-y>      建立新的文件或目录
 
+
+" CtrlSF
+" ----------------------------------------------------------------
+" In CtrlSF window:
+"o, Enter - Jump to file that contains the line under cursor.
+"t - Like o but open file in a new tab.
+"p - Like o but open file in a preview window.
+"O - Like o but always leave CtrlSF window opening.
+"T - Lkie t but focus CtrlSF window instead of opened new tab.
+"q - Quit CtrlSF window.
+"<C-J> - Move cursor to next match.
+"<C-K> - Move cursor to previous match.
+"
+" In preview window:
+"q - Close preview window.
+
 " vim-youdao-translater
 " ----------------------------------------------------------------
 " 在普通模式下，按 ctrl+t， 会翻译当前光标下的单词；
@@ -272,7 +288,8 @@ nnoremap <c-c> <c-w>c
 cmap w!! %!sudo tee >/dev/null %
 
 let mapleader=","   "将<Leader>改为','键
-let g:EasyMotion_leader_key = '<Leader>'  " easy-motion
+let g:EasyMotion_leader_key = '.'  " easy-motion
+" let g:EasyMotion_leader_key = '<Leader>'  " easy-motion
 
 imap <C-l> /*
 imap jk <Esc>
@@ -287,6 +304,8 @@ map <s-F7> :cp<CR>
 map <F12> :VimShell -buffer-name=<CR>
 " nnoremap <leader>a :Ack
 nnoremap <leader>a :Ag <C-R><C-W><cr>
+nnoremap <leader>f :CtrlSF <C-R><C-W><cr>
+nnoremap <leader>rf :CtrlSFOpen<CR>
 map <Leader>c :FixWhitespace<cr>
 
 " vimrepress
@@ -574,6 +593,9 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="kk"
 let g:UltiSnipsJumpBackwardTrigger="jj"
 let g:UltiSnipsListSnippets="<M-l>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 "let g:ulti_expand_or_jump_res = 0 "default value, just set once
 "function! Ulti_ExpandOrJump_and_getRes()
@@ -903,85 +925,80 @@ endfunc
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " let Vundle manage Vundle
 " required!
-"使用vundle插件管理器管理自身
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
-"vundel管理的插件，有三种类型
-" My Bundles here:
-"
-"格式1：Github上其他用户的仓库（非vim-scripts账户里的仓库，所以要加Github用户名）
-" original repos on github
 " Code Completions
-" Bundle 'Shougo/neocomplete.vim'
-Bundle 'Raimondi/delimitMate'
-Bundle 'Rip-Rip/clang_complete'
-Bundle 'ervandew/supertab'
-Bundle 'SirVer/ultisnips'
-"Bundle 'Shougo/neosnippet.vim'
+" Plugin 'Shougo/neocomplete.vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'Rip-Rip/clang_complete'
+Plugin 'ervandew/supertab'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+"Plugin 'Shougo/neosnippet.vim'
 " Fast navigation
-Bundle 'tsaleh/vim-matchit'
-Bundle 'Lokaltog/vim-easymotion'
+Plugin 'tsaleh/vim-matchit'
+Plugin 'Lokaltog/vim-easymotion'
 " Fast editing
-Bundle 'tpope/vim-surround'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'sjl/gundo.vim'
-Bundle 'godlygeek/tabular'
+Plugin 'tpope/vim-surround'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'sjl/gundo.vim'
+Plugin 'godlygeek/tabular'
 " IDE features
-Bundle 'majutsushi/tagbar'
-" Bundle 'mileszs/ack.vim'
-Bundle 'rking/ag.vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'dyng/ctrlsf.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'scrooloose/syntastic'
-Bundle 'scrooloose/nerdtree'
-Bundle 'brookhong/cscope.vim'
-Bundle 'fholgado/minibufexpl.vim'
-Bundle 'bronson/vim-trailing-whitespace'
+Plugin 'majutsushi/tagbar'
+" Plugin 'mileszs/ack.vim'
+Plugin 'rking/ag.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'dyng/ctrlsf.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'brookhong/cscope.vim'
+Plugin 'fholgado/minibufexpl.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'bronson/vim-trailing-whitespace'
 " Other Util
-Bundle 'Shougo/vimproc.vim'
-Bundle 'Shougo/vimshell.vim'
-Bundle 'Shougo/unite.vim'
-Bundle 'vimwiki/vimwiki'
-Bundle 'vim-pandoc/vim-pandoc'
-Bundle 'vim-pandoc/vim-pandoc-syntax'
-Bundle 'vim-pandoc/vim-pandoc-after'
-Bundle 'ianva/vim-youdao-translater'
-Bundle 'junegunn/goyo.vim'
-" Bundle 'mattn/calendar-vim'
-Bundle 'lilydjwg/fcitx.vim'
-Bundle 'Yggdroot/indentLine'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Shougo/vimshell.vim'
+Plugin 'Shougo/unite.vim'
+Plugin 'vimwiki/vimwiki'
+Plugin 'vim-pandoc/vim-pandoc'
+Plugin 'vim-pandoc/vim-pandoc-syntax'
+Plugin 'vim-pandoc/vim-pandoc-after'
+Plugin 'ianva/vim-youdao-translater'
+Plugin 'junegunn/goyo.vim'
+" Plugin 'mattn/calendar-vim'
+Plugin 'lilydjwg/fcitx.vim'
+Plugin 'Yggdroot/indentLine'
 
-"格式2：vim-scripts里面的仓库，直接打仓库名即可。
-" vim-scripts repos
-" Bundle 'bufexplorer.zip'
-Bundle 'c.vim'
-" Bundle 'a.vim'
-Bundle 'Visual-Mark'
-" Bundle 'CRefVim'
-Bundle 'mru.vim'
-Bundle 'VimRepress'
-" Bundle 'minibufexpl.vim'
+" Plugin 'bufexplorer.zip'
+Plugin 'c.vim'
+" Plugin 'a.vim'
+Plugin 'Visual-Mark'
+" Plugin 'CRefVim'
+Plugin 'mru.vim'
+Plugin 'VimRepress'
+" Plugin 'minibufexpl.vim'
 "
-"格式3：非Github的Git仓库
-" non github repos
-"Bundle 'git://git.wincent.com/command-t.git'
+"Plugin 'git://git.wincent.com/command-t.git'
 " ...
 
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
 filetype plugin indent on     " required!
 "
 " Brief help  -- 此处后面都是vundle的使用命令
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+" :PluginList          - list configured Plugins
+" :PluginInstall(!)    - install(update) Plugins
+" :PluginSearch(!) foo - search(or refresh cache first) for foo
+" :PluginClean(!)      - confirm(or auto-approve) removal of unused Plugins
 "
 " see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
+" NOTE: comments after Plugin command are not allowed..
 " -----------------------------------------------------------------------------"}}}
