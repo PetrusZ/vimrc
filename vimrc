@@ -320,8 +320,8 @@ nmap <Leader>m: :Tabularize /:\zs<CR>
 vmap <Leader>m: :Tabularize /:\zs<CR>
 
 " vim-youdao-translater
-vnoremap <silent> <C-T> <Esc>:Ydv<CR>
-nnoremap <silent> <C-T> <Esc>:Ydc<CR>
+vnoremap <silent> <Leader>t <Esc>:Ydv<CR>
+nnoremap <silent> <Leader>t <Esc>:Ydc<CR>
 noremap <leader>yd :Yde<CR>
 
 " Map Goyo toggle to <Leader> + space
