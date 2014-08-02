@@ -497,7 +497,7 @@ set cpt=.,b,t,i,d,k/home/silence/.vim/bundle/c.vim/c-support/wordlists/c-c++-key
 " -----------------------------------------------------------------------------"}}}
 "  < Tagbar 插件配置 >""{{{
 " -----------------------------------------------------------------------------
-nmap <F3> :TagbarToggle<cr>
+nmap <F4> :TagbarToggle<cr>
 let g:tagbar_left=0
 let g:tagbar_width=30
 let g:tagbar_autofocus = 1
@@ -849,7 +849,7 @@ let MRU_Max_Submenu_Entries = 15                    "设置MRU窗口默认子菜
 " -----------------------------------------------------------------------------"}}}
 "  < NERDTree 插件配置 >"{{{
 " -----------------------------------------------------------------------------
-map <F4> :NERDTreeToggle<CR>
+map <F3> :NERDTreeToggle<CR>
 "map <F5> t :NERDTreeMirror<CR>
 
 "let loaded_nerd_tree=1    " 禁用所有与NERD_tree有关的命令
