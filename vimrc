@@ -65,8 +65,8 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<F2>       切换到下一个高亮书签，或下一个语法错误处
 "<S-F2>     切换到上一个高亮书签，或上一个语法错误处
 "<c-F2>     标记高亮书签
-"<F3>       打开tagbar
-"<F4>       打开NERDTree
+"<F3>       打开NERDTree
+"<F4>       打开tagbar
 "<F5>       打开Gundo tree
 "<F6>       打开quickfix
 "<F7>       跳转到下一处错误
@@ -87,6 +87,7 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "gd         查询变量, 只在本函数中
 "[i         查询变量的定义
 "[<Tab>     跳到变量定义的地方
+"``         返回原处(仅在同一文件内有效)
 "mm         标记高亮书签
 ",a         启动ag进行全局查找 :Ag [options] pattern [PATH]
 ",o         打开bufexplorer
@@ -149,9 +150,26 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<C-z>      标记要打开的文件
 "<C-y>      建立新的文件或目录
 
+" A.vim
+" ----------------------------------------------------------------
+":A switches to the header file corresponding to the current file being edited (or vise versa)
+":AS splits and switches
+":AV vertical splits and switches
+":AT new tab and switches
+":AN cycles through matches
+":IH switches to file under cursor
+":IHS splits and switches
+":IHV vertical splits and switches
+":IHT new tab and switches
+":IHN cycles through matches
+"<Leader>ih switches to file under cursor
+"<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
+"<Leader>ihn cycles through matches
 
 " CtrlSF
 " ----------------------------------------------------------------
+"<leader>f :CtrlSF <C-R><C-W><cr>
+"<leader>rf :CtrlSFOpen<CR>
 " In CtrlSF window:
 "o, Enter - Jump to file that contains the line under cursor.
 "t - Like o but open file in a new tab.
@@ -237,6 +255,7 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "Visual模式下执行命令，会对选中的特定区块进行注释/反注释
 
 " EasyMotion
+"EasyMotion_leader_key = '.'
 " ----------------------------------------------------------------
 " Mapping           | Details
 " ------------------|----------------------------------------------
@@ -950,6 +969,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'sjl/gundo.vim'
 Plugin 'godlygeek/tabular'
 " IDE features
+Plugin 'Kris2k/A.vim'
 Plugin 'majutsushi/tagbar'
 " Plugin 'mileszs/ack.vim'
 Plugin 'rking/ag.vim'
