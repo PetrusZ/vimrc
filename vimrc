@@ -45,7 +45,9 @@ set confirm               " 关闭时如果存在未保存的文件出现提示
 set scrolloff=5           " 距离顶部或底部还有5行的时候就开始滚动屏幕
 set complete-=k complete+=k     "将字典补全添加到默认补全列表中
 
-colorscheme tango           "设置主体颜色
+syntax enable
+set background=dark
+colorscheme solarized           "设置主体颜色
 filetype plugin indent on          "开启文件类型插件和缩进识别功能
 
 " 手动折叠
@@ -999,12 +1001,10 @@ Plugin 'Yggdroot/indentLine'
 
 " Plugin 'bufexplorer.zip'
 Plugin 'c.vim'
-" Plugin 'a.vim'
 Plugin 'Visual-Mark'
 " Plugin 'CRefVim'
 Plugin 'mru.vim'
 Plugin 'VimRepress'
-" Plugin 'minibufexpl.vim'
 "
 "Plugin 'git://git.wincent.com/command-t.git'
 " ...
