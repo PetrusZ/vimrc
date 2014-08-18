@@ -46,9 +46,20 @@ set scrolloff=5           " 距离顶部或底部还有5行的时候就开始滚
 set complete-=k complete+=k     "将字典补全添加到默认补全列表中
 
 syntax enable
-set background=dark
-colorscheme solarized           "设置主体颜色
 filetype plugin indent on          "开启文件类型插件和缩进识别功能
+
+" 设置主题颜色
+if has('gui_running')
+    set background=dark
+    colorscheme solarized
+    set guifont=Ubuntu\ Mono\ 12
+    " let g:solarized_termcolors=256
+else
+    " set background=dark
+    " colorscheme solarized
+    colorscheme tango
+    " colorscheme Tomorrow-Night
+endif
 
 " 手动折叠
 "au BufWinLeave .vimrc silent mkview      "vimrc文件自动保存折叠
@@ -151,6 +162,11 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "<C-d>      更改匹配模式(文件|目录)
 "<C-z>      标记要打开的文件
 "<C-y>      建立新的文件或目录
+
+" CtrlPFunky
+" ----------------------------------------------------------------
+"<Leader>fu      打开CtrlPFunky进行查找
+"<Leader>fuw     打开CtrlPFunky查找光标下的词
 
 " A.vim
 " ----------------------------------------------------------------
@@ -348,6 +364,17 @@ noremap <leader>yd :Yde<CR>
 " Map Goyo toggle to <Leader> + space
 nnoremap <Leader><Space> :Goyo<CR>
 let g:goyo_width = 100
+
+" vim-markdown
+let g:vim_markdown_folding_disabled=1
+
+" ctrlp-funky
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+nnoremap <Leader>fuw :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+
+" nnoremap <Leader>+ <Plug>(expand_region_expand)
+" nnoremap <Leader>- <Plug>(expand_region_shrink)
 
 " switching to buffer 1 - 9 is mapped to Alt-<buffer_no>
 for buffer_no in range(1, 9)
@@ -904,6 +931,35 @@ let g:indentLine_char = "│"
 " 设置 GUI 对齐线颜色
 " let g:indentLine_color_gui = '#A4E57E'
 " -----------------------------------------------------------------------------"}}}
+"  < Rainbow Parentheses 插件配置 >"{{{
+" -----------------------------------------------------------------------------
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+" -----------------------------------------------------------------------------"}}}
 "  < 一键编译、调试 配置 >"{{{
 " -----------------------------------------------------------------------------
 "map <F8> :w<CR>:call CompileRun()<CR>
@@ -974,30 +1030,36 @@ Plugin 'godlygeek/tabular'
 Plugin 'Kris2k/A.vim'
 Plugin 'majutsushi/tagbar'
 " Plugin 'mileszs/ack.vim'
+Plugin 'spf13/PIV'
 Plugin 'rking/ag.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'dyng/ctrlsf.vim'
+Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'brookhong/cscope.vim'
 Plugin 'fholgado/minibufexpl.vim'
-Plugin 'terryma/vim-multiple-cursors'
+" Plugin 'terryma/vim-expand-region'
+" Plugin 'terryma/vim-multiple-cursors'
 Plugin 'bronson/vim-trailing-whitespace'
 " Other Util
+Plugin 'vimwiki/vimwiki'
+Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
-Plugin 'Shougo/unite.vim'
-Plugin 'vimwiki/vimwiki'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-pandoc/vim-pandoc'
 Plugin 'vim-pandoc/vim-pandoc-syntax'
 Plugin 'vim-pandoc/vim-pandoc-after'
 Plugin 'ianva/vim-youdao-translater'
+Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'junegunn/goyo.vim'
-" Plugin 'mattn/calendar-vim'
 Plugin 'lilydjwg/fcitx.vim'
 Plugin 'Yggdroot/indentLine'
+Plugin 'vim-scripts/TaskList.vim'
 
 " Plugin 'bufexplorer.zip'
 Plugin 'c.vim'
@@ -1005,6 +1067,7 @@ Plugin 'Visual-Mark'
 " Plugin 'CRefVim'
 Plugin 'mru.vim'
 Plugin 'VimRepress'
+Plugin 'sjas/csExplorer'
 "
 "Plugin 'git://git.wincent.com/command-t.git'
 " ...

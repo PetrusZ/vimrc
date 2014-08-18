@@ -59,7 +59,7 @@ hi Statement    ctermfg=green
 hi Identifier   guifg=#8ae234
 hi Identifier   ctermfg=darkgreen
 hi PreProc      guifg=#cc0000
-hi PreProc      ctermfg=darkred
+hi PreProc      ctermfg=red
 hi Comment      guifg=#06989a gui=italic
 hi Comment      ctermfg=cyan cterm=none
 hi Type         guifg=#d3d7cf gui=bold
