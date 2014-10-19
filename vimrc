@@ -356,6 +356,8 @@ vmap <Leader>m= :Tabularize /=<CR>
 nmap <Leader>m: :Tabularize /:\zs<CR>
 vmap <Leader>m: :Tabularize /:\zs<CR>
 
+nmap <Leader>g :set tags=tags;<CR>
+
 " vim-youdao-translater
 vnoremap <silent> <Leader>t <Esc>:Ydv<CR>
 nnoremap <silent> <Leader>t <Esc>:Ydc<CR>
