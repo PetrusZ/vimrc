@@ -1,8 +1,8 @@
 A personal vimrc.
 
 #### Install
-    1. install plugin manager vundle: https://github.com/gmarik/Vundle.vim
-    2. open vim, input`` :PluginInstall``
+    1. install plugin manager vundle: [https://github.com/gmarik/Vundle.vim]
+    2. open vim, input` :PluginInstall`
     3. edit .vimrc and custom
 
 
