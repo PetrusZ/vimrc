@@ -310,6 +310,33 @@ au BufRead,BufNewFile .vimperatorrc		set filetype=vim
 "select it and press <Leader>cr.
 "To get help do :help crefvimdoc
 "To show the C-reference manual do :help crefvim
+"
+"
+" VimRepress
+" ----------------------------------------------------------------
+" COMMAND EXAMPLES
+" Some commands list above contain special usage, example below may clearify them for you.
+"
+"
+"    :BlogList             -  List 30 recent posts.
+"    :BlogList page        -  List 30 recent pages.
+"    :BlogList post 100    -  List 100 recent posts.
+"
+"    :BlogNew post         -  Write an new post.
+"    :BlogNew page         -  Write an new page.
+"
+"    :BlogSave             -  Save (defautely published.)
+"    :BlogSave draft       -  Save as draft.
+"
+"    :BlogPreview local    -  Preview page/post locally in your browser.
+"    :BlogPreview publish  -  Same as `:BlogSave publish' with brower opened.
+"
+"    :BlogOpen 679
+"    :BlogOpen http://your-first-blog.com/archives/679
+"    :BlogOpen http://your-second-blog.com/?p=679
+"    :BlogOpen http://your-third-blog.com/with-your-custom-permalink
+"
+" More detailed about this commands, type :help vimpress while you have vimrepress installed.
 " -----------------------------------------------------------------------------}}}
 "  < 键盘映射 配置 >"{{{
 " -----------------------------------------------------------------------------
@@ -860,6 +887,9 @@ let g:syntastic_auto_loc_list = 2
 let g:syntastic_loc_list_height = 5
 let g:syntastic_enable_highlighting = 0
 let g:syntastic_always_populate_loc_list = 1
+
+" let g:syntastic_cpp_compiler = 'g++'
+let g:syntastic_cpp_compiler_options = '-std=c++11'
 " -----------------------------------------------------------------------------"}}}
 "  < minibufexpl 插件配置 >"{{{
 " -----------------------------------------------------------------------------
